@@ -118,11 +118,22 @@ module "app_vpc" {
   }
 }
 # Create VPC peering connection
-resource "aws_vpc_peering_connection" "terraform_to_app" {
-  vpc_id        = module.app_vpc.vpc_id
-  peer_vpc_id   = "terraform-jenkins-vpc" # Replace with the ID of the VPC you want to peer with
-  peer_region   = "us-east-2" # Replace with the region where the peer VPC is located
-  auto_accept   = true # Set this to false if you want to manually accept the peering connection
+resource "aws_vpc_peering_connection" "jenkins-to-new-vpc" {
+  vpc_id = "vpc-0d7d24cf3330b410d"
+  peer_vpc_id = "terraform-jenkins-vpc"
+  auto_accept = true
+}
+# Route tables
+resource "aws_route" "jenkins-to-new-vpc" {
+  route_table_id = "rtb-04ea23acb8d4dd608"
+  destination_cidr_block = "10.0.0.0/16"
+  vpc_peering_connection_id = "${aws_vpc_peering_connection.jenkins-to-new-vpc.id}"
+}
+
+resource "aws_route" "new-vpc-to-jenkins" {
+  route_table_id = module.app_vpc.private_route_table_ids[0]
+  destination_cidr_block = "172.31.0.0/16"
+  vpc_peering_connection_id = "${aws_vpc_peering_connection.jenkins-to-new-vpc.id}"
 }
 
 # Create security group to allow port 22,80,443
