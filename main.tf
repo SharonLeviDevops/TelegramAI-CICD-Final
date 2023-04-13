@@ -213,7 +213,6 @@ resource "aws_sqs_queue" "jenkins-sqspj-prod" {
 # Create secret managers secrets
 resource "aws_secretsmanager_secret" "jenkins_secretsmanager_prod" {
   name = "jenkins_secretsmanager_prod"
-
   tags = {
     Environment = "production"
     Owner       = "Sharon"
@@ -223,11 +222,10 @@ resource "aws_secretsmanager_secret" "jenkins_secretsmanager_prod" {
 resource "aws_secretsmanager_secret_version" "jenkins_secret_prod" {
   secret_id     = aws_secretsmanager_secret.jenkins_secretsmanager_prod.id
   secret_string = jsonencode({
-    "telegram_token_secret_name" = "value1"
+    telegram_token_secret_name = "value1"
   })
-
-
 }
+
 
 resource "aws_secretsmanager_secret" "jenkins_secretsmanager_dev" {
   name = "jenkins_secretsmanager_dev"
@@ -240,10 +238,10 @@ resource "aws_secretsmanager_secret" "jenkins_secretsmanager_dev" {
 resource "aws_secretsmanager_secret_version" "jenkins_secret_dev" {
   secret_id     = aws_secretsmanager_secret.jenkins_secretsmanager_dev.id
   secret_string = jsonencode({
-    "telegram_token_secret_name" = "value1"
+    telegram_token_secret_name = "value1"
   })
-
 }
+
 # Launch the Jenkins server instance with the first private IP
 resource "aws_instance" "Jenkins-Server" {
   ami           = aws_ami_copy.jenkins.id
