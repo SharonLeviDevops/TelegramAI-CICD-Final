@@ -27,3 +27,7 @@ variable "vpc_public_subnets" {
   type    = list
   default = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
+
+variable "secret_dev_credentials" {}
+
+variable "secret_prod_credentials" {}

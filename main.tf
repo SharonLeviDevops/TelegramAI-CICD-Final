@@ -204,7 +204,7 @@ resource "aws_secretsmanager_secret" "jenkins_secrets_prod" {
 resource "aws_secretsmanager_secret_version" "jenkins_secrets_prod" {
   secret_id     = aws_secretsmanager_secret.jenkins_secrets_prod.id
   secret_string = jsonencode({
-    telegram_token_secret_name = "value1"
+    telegram_token_secret_name = var.secret_prod_credentials
   })
 }
 
@@ -220,7 +220,7 @@ resource "aws_secretsmanager_secret" "jenkins_secrets_dev" {
 resource "aws_secretsmanager_secret_version" "jenkins_secrets_dev" {
   secret_id     = aws_secretsmanager_secret.jenkins_secrets_dev.id
   secret_string = jsonencode({
-    telegram_token_secret_name = "value1"
+    telegram_token_secret_name = var.secret_dev_credentials
   })
 }
 
