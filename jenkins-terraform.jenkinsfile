@@ -19,13 +19,22 @@ pipeline {
     }
     stage('Terraform Plan') {
       steps {
-        sh 'terraform plan -no-color'
+        withCredentials([
+          string(credentialsId: 'JenkinsProjectSharonDev', variable: 'SECRET_DEV_CREDENTIALS'),
+          string(credentialsId: 'JenkinsProjectSharonProd', variable: 'SECRET_PROD_CREDENTIALS')
+        ]) {
+          sh 'terraform plan -var secret_dev_credentials=$SECRET_DEV_CREDENTIALS -var secret_prod_credentials=$SECRET_PROD_CREDENTIALS -no-color'
+        }
       }
     }
     stage('Terraform Apply') {
       steps {
-        sh 'terraform apply -auto-approve'
-        sh "terraform apply -auto-approve -no-color -var 'secret_dev_credentials=${env.SECRET_DEV_CREDENTIALS}' -var 'secret_prod_credentials=${env.SECRET_PROD_CREDENTIALS}'"
+        withCredentials([
+          string(credentialsId: 'JenkinsProjectSharonDev', variable: 'SECRET_DEV_CREDENTIALS'),
+          string(credentialsId: 'JenkinsProjectSharonProd', variable: 'SECRET_PROD_CREDENTIALS')
+        ]) {
+          sh 'terraform apply -var secret_dev_credentials=$SECRET_DEV_CREDENTIALS -var secret_prod_credentials=$SECRET_PROD_CREDENTIALS -auto-approve -no-color'
+        }
       }
     }
   }

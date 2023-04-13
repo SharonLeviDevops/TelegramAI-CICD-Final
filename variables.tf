@@ -28,6 +28,10 @@ variable "vpc_public_subnets" {
   default = ["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]
 }
 
-variable "secret_dev_credentials" {}
+variable "secret_dev_credentials" {
+  type = string
+}
 
-variable "secret_prod_credentials" {}
+variable "secret_prod_credentials" {
+  type = string
+}
