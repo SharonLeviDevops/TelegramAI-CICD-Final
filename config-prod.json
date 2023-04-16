@@ -2,5 +2,5 @@
   "aws_region": "us-west-2",
   "bot_to_worker_queue_name": "jenkins-sqspj-prod",
   "telegram_token_secret_name": "jenkins_secrets_prod",
-  "videos_bucket": "jenkins-s3pj-prod"
+  "videos_bucket": "jenkins-s3pjr-prod"
 }
