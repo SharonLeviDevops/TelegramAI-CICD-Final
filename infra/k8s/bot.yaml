@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bot
-        image: 700935310038.dkr.ecr.us-east-2.amazonaws.com
+        image: 700935310038.dkr.ecr.us-west-2.amazonaws.com
         env:
           - name: ENV
             value: ""

@@ -2,7 +2,7 @@
 # Terraform Aws Cloud infrastructure #
 ######################################
 provider "aws" {
-  region     = "us-east-2"
+  region     = "us-west-2"
 }
 
 
@@ -257,29 +257,18 @@ resource "aws_instance" "Jenkins-Server" {
     }
 
   }
-  # Create a new ECR repository in us-east-2
-  resource "aws_ecr_repository" "jenkins_project_cicd_repo" {
-    name                 = "jenkins-project-cicd"
-    image_tag_mutability = "MUTABLE"
-    image_scanning_configuration {
-      scan_on_push = true
-    }
-    tags = {
-      Terraform   = "true"
-    }
-  }
-
-  # Build and push Docker image to ECR
-  resource "docker_image" "jenkins_project_cicd_image" {
-    name          = "jenkins-project-cicd"
-    build         = "infra/jenkins/JenkinsAgent.Dockerfile"
-    registry_url  = "${aws_ecr_repository.jenkins_project_cicd_repo.registry_id}.dkr.ecr.us-east-2.amazonaws.com"
-    tag           = "latest"
-  }
-
-  # Output the ECR repository URL
-  output "ecr_repository_url" {
-    value = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
-  }
-
-
+resource "aws_ecr_repository" "jenkins_project_cicd" {
+  name = "jenkins-project-cicd"
+}
+resource "aws_ecr_repository" "jenkins-project-dev" {
+  name = "jenkins-project-dev"
+}
+resource "aws_ecr_repository" "jenkins-project-prod" {
+  name = "jenkins-project-prod"
+}
+resource "aws_ecr_repository" "jenkins-project-worker-dev" {
+  name = "	jenkins-project-worker-dev"
+}
+resource "aws_ecr_repository" "jenkins-project-worker-prod" {
+  name = "	jenkins-project-worker-prod"
+}
