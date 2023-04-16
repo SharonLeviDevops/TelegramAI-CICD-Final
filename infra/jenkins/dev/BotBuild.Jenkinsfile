@@ -16,7 +16,7 @@ pipeline {
             steps {
                 // TODO dev bot build stage
                 sh '''
-                    aws ecr get-login-password --region us-west-1 | docker login --username AWS --password-stdin ${REPO_URL}
+                    aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin ${REPO_URL}
                     sed -i "s|COPY config-.*|image: $WORKER_IMAGE_NAME|" infra/k8s/worker.yaml
                     docker build -t ${IMAGE_NAME} -f ./bot/Dockerfile .
                     docker tag ${IMAGE_NAME} ${REPO_URL}/${IMAGE_NAME}:${BUILD_NUMBER}
