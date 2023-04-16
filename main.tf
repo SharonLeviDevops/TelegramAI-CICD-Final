@@ -1,7 +1,6 @@
 ######################################
 # Terraform Aws Cloud infrastructure #
 ######################################
-terraform {
   required_providers {
     docker = {
       source = "kreuzwerker/docker"
@@ -11,7 +10,7 @@ terraform {
 provider "aws" {
   region     = "us-east-2"
 }
-}
+
 
 # Copy AMIs from another region
 resource "aws_ami_copy" "jenkins" {
