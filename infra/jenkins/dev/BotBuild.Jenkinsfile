@@ -8,7 +8,7 @@ pipeline {
     }
     environment {
         IMAGE_NAME = 'jenkins-project-dev'
-        REPO_URL = '700935310038.dkr.ecr.us-west-1.amazonaws.com'
+        REPO_URL = '700935310038.dkr.ecr.us-east-2.amazonaws.com'
         IMAGE_TAG = '${BUILD_NUMBER}'
                 }
     stages {
