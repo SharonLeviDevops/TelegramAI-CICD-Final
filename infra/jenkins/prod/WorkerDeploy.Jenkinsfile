@@ -10,9 +10,6 @@ pipeline {
     environment {
         APP_ENV = "prod"
     }
-//     parameters {
-//         string(name: 'WORKER_IMAGE_NAME', defaultValue: '', description: 'image sent from build')
-//     }
 
     // TODO dev worker deploy stages here
     stages {
