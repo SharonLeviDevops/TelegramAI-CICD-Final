@@ -1,17 +1,6 @@
 ######################################
 # Terraform Aws Cloud infrastructure #
 ######################################
-terraform {
-  required_providers {
-    docker = {
-      source = "kreuzwerker/docker"
-      version = "~> 3.0.1"
-    }
-  }
-}
-
-provider "docker" {}
-
 provider "aws" {
   region     = "us-east-2"
 }
@@ -262,32 +251,6 @@ resource "aws_instance" "Jenkins-Server" {
       Name = "${var.resource_alias}-k8s-ec2"
     }
   }
-# Create a new ECR repository in us-east-2
-resource "aws_ecr_repository" "jenkins_project_cicd_repo" {
-  name                 = "jenkins-project-cicd"
-  image_tag_mutability = "MUTABLE"
-  image_scanning_configuration {
-    scan_on_push = true
-  }
-  tags = {
-    Terraform   = "true"
-  }
-}
 
-# Build and push Docker image to ECR
-resource "docker_image" "jenkins_project_cicd_image" {
-  name          = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
-
-  dockerfile    = "infra/jenkins/JenkinsAgent.Dockerfile"
-
-  build {
-    context = "${path.module}/infra/jenkins"
-  }
-
-  repository    = "${aws_ecr_repository.jenkins_project_cicd_repo.name}"
-  registry_id   = "${aws_ecr_repository.jenkins_project_cicd_repo.registry_id}"
-
-  tag           = "latest"
-}
 
 
