@@ -87,7 +87,12 @@ resource "aws_iam_role" "jenkins-project-roles" {
             "ecr:InitiateLayerUpload",
             "ecr:List*",
             "ecr:PutImage",
-            "ecr:UploadLayerPart"
+            "ecr:UploadLayerPart",
+            "ecr:GetAuthorizationToken",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:GetDownloadUrlForLayer",
+            "ecr:BatchGetImage",
+            "ecr:PutImage",
           ]
           Resource = "*"
         }
@@ -250,7 +255,31 @@ resource "aws_instance" "Jenkins-Server" {
     tags = {
       Name = "${var.resource_alias}-k8s-ec2"
     }
+
+  }
+  # Create a new ECR repository in us-east-2
+  resource "aws_ecr_repository" "jenkins_project_cicd_repo" {
+    name                 = "jenkins-project-cicd"
+    image_tag_mutability = "MUTABLE"
+    image_scanning_configuration {
+      scan_on_push = true
+    }
+    tags = {
+      Terraform   = "true"
+    }
   }
 
+  # Build and push Docker image to ECR
+  resource "docker_image" "jenkins_project_cicd_image" {
+    name          = "jenkins-project-cicd"
+    build         = "infra/jenkins/JenkinsAgent.Dockerfile"
+    registry_url  = "${aws_ecr_repository.jenkins_project_cicd_repo.registry_id}.dkr.ecr.us-east-2.amazonaws.com"
+    tag           = "latest"
+  }
+
+  # Output the ECR repository URL
+  output "ecr_repository_url" {
+    value = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
+  }
 
 
