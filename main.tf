@@ -276,15 +276,18 @@ resource "aws_ecr_repository" "jenkins_project_cicd_repo" {
 
 # Build and push Docker image to ECR
 resource "docker_image" "jenkins_project_cicd_image" {
-  name          = "jenkins-project-cicd"
-  build         = "infra/jenkins/JenkinsAgent.Dockerfile"
-  registry_url  = "${aws_ecr_repository.jenkins_project_cicd_repo.registry_id}.dkr.ecr.us-east-2.amazonaws.com"
-  tag           = "latest"
-}
+  name          = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
 
-# Output the ECR repository URL
-output "ecr_repository_url" {
-  value = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
+  dockerfile    = "infra/jenkins/JenkinsAgent.Dockerfile"
+
+  build {
+    context = "${path.module}/infra/jenkins"
+  }
+
+  repository    = "${aws_ecr_repository.jenkins_project_cicd_repo.name}"
+  registry_id   = "${aws_ecr_repository.jenkins_project_cicd_repo.registry_id}"
+
+  tag           = "latest"
 }
 
 
