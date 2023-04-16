@@ -5,10 +5,10 @@
 provider "aws" {
   region     = "us-east-2"
 }
-    docker = {
+docker = {
       source = "kreuzwerker/docker"
       version = "2.15.0"
-    }
+}
 # Copy Ami's from other region
 resource "aws_ami_copy" "jenkins" {
   name              = "${var.resource_alias}-ami"
