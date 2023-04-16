@@ -1,6 +1,7 @@
 ######################################
 # Terraform Aws Cloud infrastructure #
 ######################################
+terraform {
   required_providers {
     docker = {
       source = "kreuzwerker/docker"
@@ -282,5 +283,5 @@ output "ecr_repository_url" {
   value = "${aws_ecr_repository.jenkins_project_cicd_repo.repository_url}"
 }
 
-
+}
 
