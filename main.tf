@@ -184,11 +184,11 @@ resource "aws_security_group" "terraform-securitygp-exr" {
       }
 }
 # Create S3 and Sqs resources
-resource "aws_s3_bucket" "jenkins-s3pj-dev" {
+resource "aws_s3_bucket" "jenkins-s3pjr-dev" {
   bucket = "jenkins-s3pj-dev"
 }
 
-resource "aws_s3_bucket" "jenkins-s3pj-prod" {
+resource "aws_s3_bucket" "jenkins-s3pjr-prod" {
   bucket = "jenkins-s3pj-prod"
 }
 
