@@ -38,4 +38,8 @@ pipeline {
       }
     }
   }
+  post {
+    failure {
+      sh 'terraform destroy -var secret_dev_credentials=$SECRET_DEV_CREDENTIALS -var secret_prod_credentials=$SECRET_PROD_CREDENTIALS -auto-approve -no-color'
+   }
 }
