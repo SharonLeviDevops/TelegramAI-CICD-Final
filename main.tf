@@ -7,7 +7,7 @@ provider "aws" {
 }
 
 module "docker" {
-  source  = "kreuzwerker/docker/aws"
+  source  = "kreuzwerker/docker"
   version = "2.15.0"
 }
 
