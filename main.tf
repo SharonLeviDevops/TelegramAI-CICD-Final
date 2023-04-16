@@ -7,7 +7,7 @@ provider "aws" {
 }
 
 module "docker" {
-  source  = "kreuzwerker/docker"
+  source  = "registry.terraform.io/hashicorp/docker"
   version = "2.15.0"
 }
 
