@@ -5,11 +5,13 @@
 provider "aws" {
   region     = "us-east-2"
 }
-docker = {
-      source = "kreuzwerker/docker"
-      version = "2.15.0"
+
+module "docker" {
+  source  = "kreuzwerker/docker/aws"
+  version = "2.15.0"
 }
-# Copy Ami's from other region
+
+# Copy AMIs from another region
 resource "aws_ami_copy" "jenkins" {
   name              = "${var.resource_alias}-ami"
   description       = "Copy of jenkins-ami"
@@ -21,17 +23,17 @@ resource "aws_ami_copy" "jenkins" {
   }
 }
 
-
 resource "aws_ami_copy" "k8s" {
   name              = "k8s-ami"
   description       = "Copy of k8s-ami"
   source_ami_id     = "ami-0f8ede470ea845029"
   source_ami_region = "us-west-1"
 
-      tags = {
+  tags = {
     Name = "${var.resource_alias}-k8s-ec2"
   }
 }
+
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
   name = "${var.resource_alias}-roles"
@@ -98,6 +100,7 @@ resource "aws_iam_role" "jenkins-project-roles" {
     })
   }
 }
+
 resource "aws_iam_instance_profile" "terraform-jenkins-profile" {
   name = "${var.resource_alias}-profile"
   role = aws_iam_role.jenkins-project-roles.name
