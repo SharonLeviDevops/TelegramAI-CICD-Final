@@ -1,10 +1,17 @@
 ######################################
 # Terraform Aws Cloud infrastructure #
 ######################################
+terraform {
+  required_providers {
     docker = {
       source = "kreuzwerker/docker"
       version = "~> 3.0.1"
     }
+  }
+}
+
+provider "docker" {}
+
 provider "aws" {
   region     = "us-east-2"
 }
