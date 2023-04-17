@@ -205,31 +205,31 @@ resource "aws_sqs_queue" "jenkins-sqspj-prod" {
   name = "jenkins-sqspj-prod"
 }
 # Create secret managers secrets
-resource "aws_secretsmanager_secret" "jenkins_secret_production" {
-  name = "jenkins_secret_production"
+resource "aws_secretsmanager_secret" "jenkins_project_production" {
+  name = "jenkins_project_production"
   tags = {
     Environment = "production"
     Owner       = "Sharon"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "jenkins_secret_production" {
-  secret_id     = aws_secretsmanager_secret.jenkins_secret_production.id
+resource "aws_secretsmanager_secret_version" "jenkins_project_production_ver" {
+  secret_id     = aws_secretsmanager_secret.jenkins_project_production.id
   secret_string = jsonencode({
     telegram_token_secret_name = var.secret_prod_credentials
   })
 }
 
-resource "aws_secretsmanager_secret" "jenkins_secret_development" {
-  name = "jenkins_secret_development"
+resource "aws_secretsmanager_secret" "jenkins_project_development" {
+  name = "jenkins_project_development"
   tags = {
     Environment = "development"
     Owner       = "Sharon"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "jenkins_secret_development" {
-  secret_id     = aws_secretsmanager_secret.jenkins_secret_development.id
+resource "aws_secretsmanager_secret_version" "jenkins_project_development_ver" {
+  secret_id     = aws_secretsmanager_secret.jenkins_project_development.id
   secret_string = jsonencode({
     telegram_token_secret_name = var.secret_dev_credentials
   })
