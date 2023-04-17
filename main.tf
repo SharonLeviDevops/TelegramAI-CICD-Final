@@ -5,40 +5,41 @@
 provider "aws" {
   region     = "us-east-2"
 }
-# Copy Ami's from other region
-resource "aws_ami_copy" "jenkins" {
-  name              = "${var.resource_alias}-ami"
-  description       = "Copy of jenkins-ami"
-  source_ami_id     = "ami-04e2cd5f60a36418a"
-  source_ami_region = "us-west-1"
+## Copy Ami's from other region
+#resource "aws_ami_copy" "jenkins" {
+#  name              = "${var.resource_alias}-ami"
+#  description       = "Copy of jenkins-ami"
+#  source_ami_id     = "ami-04e2cd5f60a36418a"
+#  source_ami_region = "us-west-1"
+#
+#  tags = {
+#    Name = "${var.resource_alias}-jenkins-ec2"
+#  }
+#}
+#
+#
+#resource "aws_ami_copy" "k8s" {
+#  name              = "k8s-ami"
+#  description       = "Copy of k8s-ami"
+#  source_ami_id     = "ami-0f8ede470ea845029"
+#  source_ami_region = "us-west-1"
+#
+#      tags = {
+#    Name = "${var.resource_alias}-k8s-ec2"
+#  }
+#}
+#
+#resource "aws_ami_copy" "Ansible" {
+#  name              = "Ansible-ami"
+#  description       = "Copy of Ansible-ami"
+#  source_ami_id     = "ami-04163fad9c45c0615"
+#  source_ami_region = "us-east-1"
+#
+#      tags = {
+#    Name = "${var.resource_alias}-Ansible-ec2"
+#  }
+#}
 
-  tags = {
-    Name = "${var.resource_alias}-jenkins-ec2"
-  }
-}
-
-
-resource "aws_ami_copy" "k8s" {
-  name              = "k8s-ami"
-  description       = "Copy of k8s-ami"
-  source_ami_id     = "ami-0f8ede470ea845029"
-  source_ami_region = "us-west-1"
-
-      tags = {
-    Name = "${var.resource_alias}-k8s-ec2"
-  }
-}
-
-resource "aws_ami_copy" "Ansible" {
-  name              = "Ansible-ami"
-  description       = "Copy of Ansible-ami"
-  source_ami_id     = "ami-04163fad9c45c0615"
-  source_ami_region = "us-east-1"
-
-      tags = {
-    Name = "${var.resource_alias}-Ansible-ec2"
-  }
-}
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
   name = "${var.resource_alias}-role"
@@ -106,7 +107,7 @@ resource "aws_iam_role" "jenkins-project-roles" {
   }
 }
 resource "aws_iam_instance_profile" "terraform-jenkins-profile" {
-  name = "${var.resource_alias}-profile"
+  name = "${var.resource_alias}-profile-last"
   role = aws_iam_role.jenkins-project-roles.name
 }
 # Create Vpc mpdule
