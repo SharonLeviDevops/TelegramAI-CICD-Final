@@ -3,7 +3,7 @@
 ######################################
 
 provider "aws" {
-  region     = "eu-east-3"
+  region     = "eu-west-3"
 }
 # Copy Ami's from other region
 resource "aws_ami_copy" "jenkins" {
