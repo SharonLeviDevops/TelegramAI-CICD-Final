@@ -277,3 +277,18 @@ resource "aws_instance" "Jenkins-Server" {
     }
   }
 
+  resource "aws_ecr_repository" "jenkins_project_cicd" {
+    name = "jenkins-project-cicd"
+  }
+  resource "aws_ecr_repository" "jenkins-project-dev" {
+  name = "jenkins-project-dev"
+  }
+  resource "aws_ecr_repository" "jenkins-project-prod" {
+  name = "jenkins-project-prod"
+  }
+  resource "aws_ecr_repository" "jenkins-project-worker-dev" {
+  name = "jenkins-project-worker-dev"
+  }
+  resource "aws_ecr_repository" "jenkins-project-worker-prod" {
+  name = "jenkins-project-worker-prod"
+  }
