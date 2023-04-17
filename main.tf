@@ -219,7 +219,6 @@ resource "aws_secretsmanager_secret_version" "jenkins_secret_prod" {
   })
 }
 
-
 resource "aws_secretsmanager_secret" "jenkins_secret_dev" {
   name = "jenkins_secret_dev"
   tags = {
