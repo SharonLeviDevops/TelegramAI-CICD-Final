@@ -238,7 +238,8 @@ resource "aws_secretsmanager_secret_version" "jenkins_secret_dev" {
 
 # Launch the Jenkins server instance with the first private IP
 resource "aws_instance" "Jenkins-Server" {
-  ami           = aws_ami_copy.jenkins.id
+#    ami           = aws_ami_copy.Ansible.id
+  ami            = "ami-003e297753b9ac01d"
   instance_type = "t2.small"
   key_name      = "terraform-sharon"
   subnet_id     = module.app_vpc.public_subnets[0]
@@ -251,7 +252,8 @@ resource "aws_instance" "Jenkins-Server" {
 }
   # Launch the k8s server instance with the second private IP
   resource "aws_instance" "k8s-Server" {
-    ami           = aws_ami_copy.k8s.id
+#    ami           = aws_ami_copy.Ansible.id
+    ami            = "ami-0474f5b3b6c16b66a"
     instance_type = "t2.medium"
     key_name      = "terraform-sharon"
     subnet_id     = module.app_vpc.public_subnets[1]
@@ -263,7 +265,8 @@ resource "aws_instance" "Jenkins-Server" {
   }
   # Launch the Ansible server instance with the second private IP
   resource "aws_instance" "Ansible-Server" {
-    ami           = aws_ami_copy.Ansible.id
+#    ami           = aws_ami_copy.Ansible.id
+    ami            = "ami-09b0a388c3fb0c964"
     instance_type = "t2.medium"
     key_name      = "terraform-sharon"
     subnet_id     = module.app_vpc.public_subnets[1]
