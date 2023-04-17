@@ -15,7 +15,7 @@ variable "subnets_cidr" {
 
 variable "azs" {
 	type = list
-	default = ["us-west-2a", "us-west-2b"]
+	default = ["us-east-2a", "us-east-2b"]
 }
 
 variable "vpc_private_subnets" {
