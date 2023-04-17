@@ -4,10 +4,10 @@ pipeline {
     terraform 'Terraform'
   }
   options {
-    withAWS(credentials: 'aws', region: 'us-west-2')
+    withAWS(credentials: 'aws', region: 'eu-west-3')
   }
   environment {
-    AWS_DEFAULT_REGION = 'us-west-2'
+    AWS_DEFAULT_REGION = 'eu-west-3'
     SECRET_DEV_CREDENTIALS = credentials('JenkinsProjectSharonDev')
     SECRET_PROD_CREDENTIALS = credentials('JenkinsProjectSharonProd')
   }
