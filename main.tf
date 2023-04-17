@@ -41,7 +41,7 @@ resource "aws_ami_copy" "Ansible" {
 }
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
-  name = "${var.resource_alias}-roles"
+  name = "${var.resource_alias}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -205,7 +205,7 @@ resource "aws_sqs_queue" "jenkins-sqspj-prod" {
 }
 # Create secret managers secrets
 resource "aws_secretsmanager_secret" "jenkins_secret_prod" {
-  name = "jenkins_secret_prod"
+  name = "jenkins_secret_production"
   tags = {
     Environment = "production"
     Owner       = "Sharon"
@@ -220,7 +220,7 @@ resource "aws_secretsmanager_secret_version" "jenkins_secret_prod" {
 }
 
 resource "aws_secretsmanager_secret" "jenkins_secret_dev" {
-  name = "jenkins_secret_dev"
+  name = "jenkins_secret_development"
   tags = {
     Environment = "development"
     Owner       = "Sharon"
