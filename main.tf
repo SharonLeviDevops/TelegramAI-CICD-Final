@@ -227,7 +227,6 @@ resource "aws_secretsmanager_secret" "jenkins_secret_dev" {
   }
 }
 
-
 resource "aws_secretsmanager_secret_version" "jenkins_secret_dev" {
   secret_id     = aws_secretsmanager_secret.jenkins_secret_dev.id
   secret_string = jsonencode({
