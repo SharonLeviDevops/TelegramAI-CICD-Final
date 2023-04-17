@@ -28,6 +28,17 @@ resource "aws_ami_copy" "k8s" {
     Name = "${var.resource_alias}-k8s-ec2"
   }
 }
+
+resource "aws_ami_copy" "Ansible" {
+  name              = "Ansible-ami"
+  description       = "Copy of Ansible-ami"
+  source_ami_id     = "ami-04163fad9c45c0615"
+  source_ami_region = "us-east-1"
+
+      tags = {
+    Name = "${var.resource_alias}-Ansible-ec2"
+  }
+}
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
   name = "${var.resource_alias}-roles"
@@ -249,6 +260,16 @@ resource "aws_instance" "Jenkins-Server" {
       Name = "${var.resource_alias}-k8s-ec2"
     }
   }
-
-
+  # Launch the Ansible server instance with the second private IP
+  resource "aws_instance" "k8s-Server" {
+    ami           = aws_ami_copy.Ansible.id
+    instance_type = "t2.medium"
+    key_name      = "terraform-sharon"
+    subnet_id     = module.app_vpc.public_subnets[1]
+    vpc_security_group_ids = [aws_security_group.terraform-securitygp-exr.id]
+    iam_instance_profile = aws_iam_instance_profile.terraform-jenkins-profile.name
+    tags = {
+      Name = "${var.resource_alias}-Ansible-ec2"
+    }
+  }
 
