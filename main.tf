@@ -234,6 +234,7 @@ resource "aws_secretsmanager_secret_version" "jenkins_secret_dev" {
   })
 }
 
+
 # Launch the Jenkins server instance with the first private IP
 resource "aws_instance" "Jenkins-Server" {
   ami           = aws_ami_copy.jenkins.id
