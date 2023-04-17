@@ -261,7 +261,7 @@ resource "aws_instance" "Jenkins-Server" {
     }
   }
   # Launch the Ansible server instance with the second private IP
-  resource "aws_instance" "k8s-Server" {
+  resource "aws_instance" "Ansible-Server" {
     ami           = aws_ami_copy.Ansible.id
     instance_type = "t2.medium"
     key_name      = "terraform-sharon"
