@@ -5,29 +5,6 @@
 provider "aws" {
   region     = "us-east-2"
 }
-# Copy Ami's from other region
-resource "aws_ami_copy" "jenkins" {
-  name              = "${var.resource_alias}-ami"
-  description       = "Copy of jenkins-ami"
-  source_ami_id     = "ami-04e2cd5f60a36418a"
-  source_ami_region = "us-west-1"
-
-  tags = {
-    Name = "${var.resource_alias}-jenkins-ec2"
-  }
-}
-
-
-resource "aws_ami_copy" "k8s" {
-  name              = "k8s-ami"
-  description       = "Copy of k8s-ami"
-  source_ami_id     = "ami-0f8ede470ea845029"
-  source_ami_region = "us-west-1"
-
-      tags = {
-    Name = "${var.resource_alias}-k8s-ec2"
-  }
-}
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
   name = "${var.resource_alias}-roles"
@@ -174,7 +151,7 @@ resource "aws_security_group" "terraform-securitygp-exr" {
     egress {
         from_port = 0
         to_port = 0
-        protocol = "tcp"
+        protocol = "all"
         cidr_blocks = ["0.0.0.0/0"]
     }
       tags = {
