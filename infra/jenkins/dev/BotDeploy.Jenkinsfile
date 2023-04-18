@@ -9,13 +9,11 @@ pipeline {
 
     parameters {
         string(name: 'BOT_IMAGE_NAME', defaultValue: '', description: 'image sent from build')
-
     }
 
     environment {
         APP_ENV = "dev"
     }
-
 
     stages {
         stage('Bot Deploy') {
@@ -24,7 +22,9 @@ pipeline {
                     file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')
                 ]) {
                     sh '''
-                    # apply the configurations to k8s cluster..
+                    # check if namespace exists, create if not
+                    kubectl get namespace dev || kubectl create namespace dev
+                    # apply the configurations to k8s cluster
                     sed -i "s|image:.*|image: $BOT_IMAGE_NAME|" infra/k8s/bot.yaml
                     sed -i 's|value:.*|value: "dev"|' infra/k8s/bot.yaml
                     cat infra/k8s/bot.yaml
