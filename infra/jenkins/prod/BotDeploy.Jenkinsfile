@@ -22,6 +22,8 @@ pipeline {
                     file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG')
                 ]) {
                     sh '''
+                    # check if namespace exists, create if not
+                    kubectl get namespace prod || kubectl create namespace prod
                     # apply the configurations to k8s cluster..
                     echo ${BOT_IMAGE_NAME}
                     sed -i "s|image:.*|image: $BOT_IMAGE_NAME|" infra/k8s/bot.yaml

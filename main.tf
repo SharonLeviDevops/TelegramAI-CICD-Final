@@ -5,7 +5,6 @@
 provider "aws" {
   region     = "us-east-2"
 }
-
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
   name = "${var.resource_alias}-role"
@@ -145,10 +144,10 @@ resource "aws_security_group" "terraform-securitygp-exr" {
         cidr_blocks = ["0.0.0.0/0"]
     }
     egress {
-          from_port = 0
-          to_port = 0
-          protocol = "all"
-          cidr_blocks = ["0.0.0.0/0"]
+        from_port = 0
+        to_port = 0
+        protocol = "all"
+        cidr_blocks = ["0.0.0.0/0"]
     }
       tags = {
         Name = "terraform-securitygp-exr"
