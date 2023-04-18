@@ -23,7 +23,6 @@ class Bot:
     def start(self):
         """Start polling msgs from users, this function never returns"""
         logger.info(f'{self.__class__.__name__} is up and listening to new messages.....')
-
         logger.info('Telegram Bot information')
         logger.info(self.bot.get_me())
 
@@ -84,6 +83,10 @@ class YoutubeBot(Bot):
                 )
                 logger.info(f'msg {response.get("MessageId")} has been sent to queue')
                 self.send_text('Your message is being processed..')
+                self.send_text('3..')
+                self.send_text('2..')
+                self.send_text('1..')
+                self.send_text('Done!!')
             except ClientError as error:
                 logger.error(error)
                 self.send_text('Something went wrong, please try again.......')
