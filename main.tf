@@ -7,7 +7,7 @@ provider "aws" {
 }
 # Create IAM role
 resource "aws_iam_role" "jenkins-project-roles" {
-  name = "${var.resource_alias}-roles"
+  name = "${var.resource_alias}-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -63,12 +63,7 @@ resource "aws_iam_role" "jenkins-project-roles" {
             "ecr:InitiateLayerUpload",
             "ecr:List*",
             "ecr:PutImage",
-            "ecr:UploadLayerPart",
-            "ecr:GetAuthorizationToken",
-            "ecr:BatchCheckLayerAvailability",
-            "ecr:GetDownloadUrlForLayer",
-            "ecr:BatchGetImage",
-            "ecr:PutImage",
+            "ecr:UploadLayerPart"
           ]
           Resource = "*"
         }
@@ -77,7 +72,7 @@ resource "aws_iam_role" "jenkins-project-roles" {
   }
 }
 resource "aws_iam_instance_profile" "terraform-jenkins-profile" {
-  name = "${var.resource_alias}-profile"
+  name = "${var.resource_alias}-profile-last"
   role = aws_iam_role.jenkins-project-roles.name
 }
 # Create Vpc mpdule
@@ -159,11 +154,11 @@ resource "aws_security_group" "terraform-securitygp-exr" {
       }
 }
 # Create S3 and Sqs resources
-resource "aws_s3_bucket" "jenkins-s3pjr-dev" {
+resource "aws_s3_bucket" "jenkins-s3pj-dev" {
   bucket = "jenkins-s3pj-dev"
 }
 
-resource "aws_s3_bucket" "jenkins-s3pjr-prod" {
+resource "aws_s3_bucket" "jenkins-s3pj-prod" {
   bucket = "jenkins-s3pj-prod"
 }
 
@@ -175,40 +170,41 @@ resource "aws_sqs_queue" "jenkins-sqspj-prod" {
   name = "jenkins-sqspj-prod"
 }
 # Create secret managers secrets
-resource "aws_secretsmanager_secret" "jenkins_secrets_prod" {
-  name = "jenkins_secrets_prod"
+resource "aws_secretsmanager_secret" "jenkins_project_prod" {
+  name = "jenkins_project_prod"
   tags = {
     Environment = "production"
     Owner       = "Sharon"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "jenkins_secrets_prod" {
-  secret_id     = aws_secretsmanager_secret.jenkins_secrets_prod.id
+resource "aws_secretsmanager_secret_version" "jenkins_project_prod_ver" {
+  secret_id     = aws_secretsmanager_secret.jenkins_project_prod.id
   secret_string = jsonencode({
     telegram_token_secret_name = var.secret_prod_credentials
   })
 }
 
-
-resource "aws_secretsmanager_secret" "jenkins_secrets_dev" {
-  name = "jenkins_secrets_dev"
+resource "aws_secretsmanager_secret" "jenkins_project_dev" {
+  name = "jenkins_project_dev"
   tags = {
     Environment = "development"
     Owner       = "Sharon"
   }
 }
 
-resource "aws_secretsmanager_secret_version" "jenkins_secrets_dev" {
-  secret_id     = aws_secretsmanager_secret.jenkins_secrets_dev.id
+resource "aws_secretsmanager_secret_version" "jenkins_project_dev_ver" {
+  secret_id     = aws_secretsmanager_secret.jenkins_project_dev.id
   secret_string = jsonencode({
     telegram_token_secret_name = var.secret_dev_credentials
   })
 }
 
+
 # Launch the Jenkins server instance with the first private IP
 resource "aws_instance" "Jenkins-Server" {
-  ami           = aws_ami_copy.jenkins.id
+#    ami           = aws_ami_copy.Ansible.id
+  ami            = "ami-04381a2d04ea392b5"
   instance_type = "t2.small"
   key_name      = "terraform-sharon"
   subnet_id     = module.app_vpc.public_subnets[0]
@@ -221,7 +217,8 @@ resource "aws_instance" "Jenkins-Server" {
 }
   # Launch the k8s server instance with the second private IP
   resource "aws_instance" "k8s-Server" {
-    ami           = aws_ami_copy.k8s.id
+#    ami           = aws_ami_copy.Ansible.id
+    ami            = "ami-08e297e152736d652"
     instance_type = "t2.medium"
     key_name      = "terraform-sharon"
     subnet_id     = module.app_vpc.public_subnets[1]
@@ -230,20 +227,33 @@ resource "aws_instance" "Jenkins-Server" {
     tags = {
       Name = "${var.resource_alias}-k8s-ec2"
     }
-
   }
-resource "aws_ecr_repository" "jenkins_project_cicd" {
-  name = "jenkins-project-cicd"
-}
-resource "aws_ecr_repository" "jenkins-project-dev" {
+  # Launch the Ansible server instance with the second private IP
+  resource "aws_instance" "Ansible-Server" {
+#    ami           = aws_ami_copy.Ansible.id
+    ami            = "ami-09b0a388c3fb0c964"
+    instance_type = "t2.medium"
+    key_name      = "terraform-sharon"
+    subnet_id     = module.app_vpc.public_subnets[1]
+    vpc_security_group_ids = [aws_security_group.terraform-securitygp-exr.id]
+    iam_instance_profile = aws_iam_instance_profile.terraform-jenkins-profile.name
+    tags = {
+      Name = "${var.resource_alias}-Ansible-ec2"
+    }
+  }
+
+  resource "aws_ecr_repository" "jenkins_project_cicd" {
+    name = "jenkins-project-cicd"
+  }
+  resource "aws_ecr_repository" "jenkins-project-dev" {
   name = "jenkins-project-dev"
-}
-resource "aws_ecr_repository" "jenkins-project-prod" {
+  }
+  resource "aws_ecr_repository" "jenkins-project-prod" {
   name = "jenkins-project-prod"
-}
-resource "aws_ecr_repository" "jenkins-project-worker-dev" {
-  name = "	jenkins-project-worker-dev"
-}
-resource "aws_ecr_repository" "jenkins-project-worker-prod" {
-  name = "	jenkins-project-worker-prod"
-}
+  }
+  resource "aws_ecr_repository" "jenkins-project-worker-dev" {
+  name = "jenkins-project-worker-dev"
+  }
+  resource "aws_ecr_repository" "jenkins-project-worker-prod" {
+  name = "jenkins-project-worker-prod"
+  }
