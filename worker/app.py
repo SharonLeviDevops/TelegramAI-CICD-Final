@@ -26,7 +26,7 @@ def process_msg(msg):
         name = video['filename']
         s3.upload_file(name, config.get('videos_bucket'), name)
         os.remove(name)
-        logger.info(f'{name} has been successfully uploaded!')
+        logger.info(f'{name} has been successfully uploaded!@#!')
 
 
 def main():
