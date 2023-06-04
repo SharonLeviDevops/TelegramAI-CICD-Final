@@ -26,4 +26,5 @@ All pipelines should be implemented in the dev branch. The Docker image for all 
 Your goal is to provision the TelegramAI chat app as a scalable, micro-services architecture in K8s.
 
 Here is a high level diagram of the architecture:
-![cicd-app](https://user-images.githubusercontent.com/106589153/225331080-e3d755e4-0fcb-4580-9708-5f5b9988794b.png)
+![cicd-app](![telegram-ai-archit](https://github.com/SharonLeviDevops/TelegramAI-CICD-Final/assets/106589153/cd174bab-dc68-44ce-9c61-47f01ec9bcae)
+)
