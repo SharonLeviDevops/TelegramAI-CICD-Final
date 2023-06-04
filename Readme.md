@@ -27,4 +27,3 @@ Your goal is to provision the TelegramAI chat app as a scalable, micro-services 
 
 Here is a high level diagram of the architecture:
 ![cicd-app](![telegram-ai-archit](https://github.com/SharonLeviDevops/TelegramAI-CICD-Final/assets/106589153/cd174bab-dc68-44ce-9c61-47f01ec9bcae)
-)
