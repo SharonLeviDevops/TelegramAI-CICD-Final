@@ -88,7 +88,6 @@ class YoutubeBot(Bot):
                 logger.error(error)
                 self.send_text('Something went wrong, please try again.!!!!!')
 
-
 def get_telegram_token_secret():
     secrets_manager = boto3.client('secretsmanager', region_name=config.get('aws_region'))
     secret_value = secrets_manager.get_secret_value(
