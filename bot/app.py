@@ -86,7 +86,7 @@ class YoutubeBot(Bot):
                 self.send_text('Done!!')
             except ClientError as error:
                 logger.error(error)
-                self.send_text('Something went wrong, please try again.......')
+                self.send_text('Something went wrong, please try again.!!!!!')
 
 
 def get_telegram_token_secret():
